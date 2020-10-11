@@ -9,7 +9,7 @@ class Response extends BaseResponse
     public static function success($message)
     {
         return new BaseResponse([
-            'error' => false,
+            'errors' => false,
             'message' => $message,
         ]);
     }
@@ -17,7 +17,7 @@ class Response extends BaseResponse
     public static function error($message)
     {
         return new BaseResponse([
-            'error' => true,
+            'errors' => true,
             'message' => $message,
         ]);
     }

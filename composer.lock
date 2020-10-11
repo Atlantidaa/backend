@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9363419584c541d318a355271200dace",
+    "content-hash": "644a86bb58ae30e1e2679dc7b5adc605",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4746,6 +4746,45 @@
                 }
             ],
             "time": "2020-09-14T15:57:31+00:00"
+        },
+        {
+            "name": "vodka2/vk-audio-token",
+            "version": "1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vodka2/vk-audio-token.git",
+                "reference": "d715b04da766c69067eb624f882456822ba3ead3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vodka2/vk-audio-token/zipball/d715b04da766c69067eb624f882456822ba3ead3",
+                "reference": "d715b04da766c69067eb624f882456822ba3ead3",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Vodka2\\VKAudioToken\\": "src/Vodka2/VKAudioToken"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "vodka2",
+                    "email": "vodka2vodka@rambler.ru"
+                }
+            ],
+            "description": "Library that obtains VK tokens that work for VK audio API. Библиотека для получения токена VK, подходящего для Audio API.",
+            "keywords": [
+                "audio",
+                "music",
+                "vk",
+                "vkontakte"
+            ],
+            "time": "2020-08-23T16:56:29+00:00"
         },
         {
             "name": "voku/portable-ascii",

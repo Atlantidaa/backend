@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\YoutubeController;
+use App\Http\Controllers\VkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +23,14 @@ Route::group(
     function() {
         Route::get('search', [YoutubeController::class, 'search'])->name('youtubeSearch');
         Route::get('download/{id}', [YoutubeController::class, 'download'])->name('youtubeDownload');
+    }
+);
+
+Route::group(
+    [
+        'prefix' => 'vk',
+    ],
+    function() {
+        Route::get('search', [VkController::class, 'search'])->name('youtubeSearch');
     }
 );

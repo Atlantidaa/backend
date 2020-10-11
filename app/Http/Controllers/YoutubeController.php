@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Services\YoutubeServiceContract;
-use App\Http\Requests\YoutubeSearchRequest;
+use App\Http\Requests\MusicSearchRequest;
 use App\Extensions\Response;
 
 class YoutubeController extends Controller
@@ -15,7 +15,7 @@ class YoutubeController extends Controller
         $this->youtubeService = $youtubeService;
     }
 
-    public function search(YoutubeSearchRequest $request)
+    public function search(MusicSearchRequest $request)
     {
         $result = $this->youtubeService->search($request->get('query'));
 
