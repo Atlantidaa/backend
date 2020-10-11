@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b56bfb5d21eaae286e532c3ed2f8941",
+    "content-hash": "9363419584c541d318a355271200dace",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -57,6 +57,46 @@
                 "stack"
             ],
             "time": "2020-05-31T07:17:05+00:00"
+        },
+        {
+            "name": "athlon1600/youtube-downloader",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Athlon1600/youtube-downloader.git",
+                "reference": "e92b8763059cd28f72bf29b00896473fb503f5dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Athlon1600/youtube-downloader/zipball/e92b8763059cd28f72bf29b00896473fb503f5dc",
+                "reference": "e92b8763059cd28f72bf29b00896473fb503f5dc",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": "^5.6 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7|6.2|^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "YouTube\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP powered alternative for youtube-dl",
+            "keywords": [
+                "download youtube",
+                "download youtube videos",
+                "youtube downloader"
+            ],
+            "time": "2020-07-28T15:14:30+00:00"
         },
         {
             "name": "brick/math",
@@ -1294,6 +1334,55 @@
                 }
             ],
             "time": "2020-09-21T18:10:53+00:00"
+        },
+        {
+            "name": "madcoda/php-youtube-api",
+            "version": "v1.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/madcoda/php-youtube-api.git",
+                "reference": "886e3aa1789cd19ad0c7add239bd2967f3b5ad4d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/madcoda/php-youtube-api/zipball/886e3aa1789cd19ad0c7add239bd2967f3b5ad4d",
+                "reference": "886e3aa1789cd19ad0c7add239bd2967f3b5ad4d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.5 || ^5.0.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Madcoda\\Youtube\\": "src"
+                },
+                "classmap": [
+                    "src/compat.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Madcoda",
+                    "email": "jason@madcoda.com"
+                }
+            ],
+            "description": "PHP wrapper for the Youtube Data API v3",
+            "keywords": [
+                "api",
+                "madcoda",
+                "video",
+                "youtube"
+            ],
+            "time": "2017-04-13T09:47:50+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -7132,7 +7221,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3"
+        "php": "^7.4"
     },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"

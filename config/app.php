@@ -175,6 +175,15 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * Service Providers
+         */
+        App\Providers\YoutubeServiceProvider::class,
+
+        /*
+         * Dependencies Providers
+         */
+        Madcoda\Youtube\YoutubeServiceProviderLaravel5::class,
     ],
 
     /*
