@@ -179,6 +179,7 @@ return [
          * Service Providers
          */
         App\Providers\YoutubeServiceProvider::class,
+        App\Providers\VkServiceProvider::class,
 
         /*
          * Dependencies Providers
