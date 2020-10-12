@@ -31,6 +31,6 @@ Route::group(
         'prefix' => 'vk',
     ],
     function() {
-        Route::get('search', [VkController::class, 'search'])->name('youtubeSearch');
+        Route::get('search', [VkController::class, 'search'])->name('vkSearch');
     }
 );
