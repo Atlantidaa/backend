@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "644a86bb58ae30e1e2679dc7b5adc605",
+    "content-hash": "15f56c651fc057e7e0283bd129523521",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -149,6 +149,62 @@
                 }
             ],
             "time": "2020-08-18T23:57:15+00:00"
+        },
+        {
+            "name": "clickalicious/memcached.php",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/clickalicious/memcached-php.git",
+                "reference": "d79c9ff551e8f041c559cca6535fec30e8a0af9d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/clickalicious/memcached-php/zipball/d79c9ff551e8f041c559cca6535fec30e8a0af9d",
+                "reference": "d79c9ff551e8f041c559cca6535fec30e8a0af9d",
+                "shasum": ""
+            },
+            "require": {
+                "gpupo/cache": "^1.2",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Clickalicious\\": "src/Clickalicious/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                "src/"
+            ],
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Carl",
+                    "email": "opensource@clickalicious.de",
+                    "homepage": "https://www.clickalicious.de",
+                    "role": "Lead"
+                }
+            ],
+            "description": "Memcached.php - Plain vanilla PHP Memcached client with full support of Memcached protocol.",
+            "homepage": "https://github.com/clickalicious/Memcached.php",
+            "keywords": [
+                "client",
+                "inmemory",
+                "memcache",
+                "memcached",
+                "memory",
+                "nosql",
+                "php"
+            ],
+            "time": "2016-04-15T22:59:16+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -517,6 +573,61 @@
             "time": "2020-06-23T01:36:47+00:00"
         },
         {
+            "name": "fig/cache-util",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/cache-util.git",
+                "reference": "771adf39e9a09325b8c20f35f3d2bdafcb78ac8c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/cache-util/zipball/771adf39e9a09325b8c20f35f3d2bdafcb78ac8c",
+                "reference": "771adf39e9a09325b8c20f35f3d2bdafcb78ac8c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "psr/cache": "^1.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.1",
+                "squizlabs/php_codesniffer": "^2.3.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fig\\Cache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                },
+                {
+                    "name": "Larry Garfield",
+                    "homepage": "http://www.garfieldtech.com/"
+                }
+            ],
+            "description": "Useful utility classes and traits for implementing the PSR cache standard",
+            "keywords": [
+                "cache",
+                "psr",
+                "psr-6"
+            ],
+            "time": "2018-11-08T17:23:20+00:00"
+        },
+        {
             "name": "fruitcake/laravel-cors",
             "version": "v2.0.2",
             "source": {
@@ -588,6 +699,100 @@
                 }
             ],
             "time": "2020-09-07T11:48:52+00:00"
+        },
+        {
+            "name": "gpupo/cache",
+            "version": "1.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gpupo/cache.git",
+                "reference": "08e8e8c18381e5db0cf7f1e08eb1af231cd10ab2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gpupo/cache/zipball/08e8e8c18381e5db0cf7f1e08eb1af231cd10ab2",
+                "reference": "08e8e8c18381e5db0cf7f1e08eb1af231cd10ab2",
+                "shasum": ""
+            },
+            "require": {
+                "fig/cache-util": "dev-master as 1.0.x-dev",
+                "gpupo/common": "*",
+                "php": "^5.6 || ^7.0",
+                "psr/cache": "^1.0"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "@dev",
+                "phpunit/phpunit": "~5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gpupo\\Cache\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gilmar Pupo",
+                    "email": "contact@gpupo.com"
+                }
+            ],
+            "description": "Caching library that implements PSR-6",
+            "homepage": "https://opensource.gpupo.com/cache/",
+            "keywords": [
+                "cache",
+                "psr-6"
+            ],
+            "abandoned": "https://github.com/symfony/cache",
+            "time": "2017-04-11T17:21:30+00:00"
+        },
+        {
+            "name": "gpupo/common",
+            "version": "2.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gpupo/common.git",
+                "reference": "d52b3c18c773fc09081615df879d06d1e2e44b31"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gpupo/common/zipball/d52b3c18c773fc09081615df879d06d1e2e44b31",
+                "reference": "d52b3c18c773fc09081615df879d06d1e2e44b31",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "dev-master",
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gpupo\\Common\\": "src",
+                    "Gpupo\\Tests\\Common\\": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gilmar Pupo",
+                    "email": "contact@gpupo.com"
+                }
+            ],
+            "description": "Common Objects",
+            "homepage": "https://opensource.gpupo.com/common/",
+            "keywords": [
+                "common"
+            ],
+            "time": "2018-05-17T14:34:49+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -1786,6 +1991,52 @@
                 }
             ],
             "time": "2020-07-20T17:29:33+00:00"
+        },
+        {
+            "name": "psr/cache",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/cache.git",
+                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Cache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for caching libraries",
+            "keywords": [
+                "cache",
+                "psr",
+                "psr-6"
+            ],
+            "time": "2016-08-06T20:24:11+00:00"
         },
         {
             "name": "psr/container",
@@ -7260,7 +7511,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.4"
+        "php": "^7.4",
+        "ext-json": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"

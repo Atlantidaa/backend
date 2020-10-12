@@ -2,27 +2,50 @@
 
 namespace App\Extensions;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use Vodka2\VKAudioToken\AndroidCheckin;
 use Vodka2\VKAudioToken\IFAuth;
 use Vodka2\VKAudioToken\IFAuthException;
+use Vodka2\VKAudioToken\MTalkException;
 use Vodka2\VKAudioToken\SmallProtobufHelper;
 use Vodka2\VKAudioToken\CommonParams;
 use Vodka2\VKAudioToken\MTalkClient;
 use Vodka2\VKAudioToken\SupportedClients;
 use Vodka2\VKAudioToken\TokenReceiverBoom;
+use Clickalicious\Memcached\Client as MemcacheClient;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\GuzzleException;
 
 class Vk
 {
-    public string $token = '';
+    const MEMCACHE_TOKEN_KEY = 'vk_token';
 
-    public function __construct(string $login, string $password)
+    protected string $token = '';
+    protected GuzzleClient $guzzleClient;
+    protected MemcacheClient $memcacheClient;
+
+    public function __construct()
     {
-        $this->authorize($login, $password);
+        $this->guzzleClient = $this->setGuzzleClient();
+        $this->memcacheClient = $this->setMemcacheClient();
+
+        $this->token = $this->getToken();
     }
 
-    protected function authorize(string $login, string $password): bool
+    protected function getToken()
+    {
+        $memcachedToken = $this->memcacheClient->get(static::MEMCACHE_TOKEN_KEY);
+
+        if (empty($memcachedToken)) {
+            $token = $this->authorize(config('vk.login'), config('vk.password'));
+            $this->memcacheClient->set(static::MEMCACHE_TOKEN_KEY, $token);
+
+            return $token;
+        }
+
+        return $memcachedToken;
+    }
+
+    protected function authorize(string $login, string $password): string
     {
         $params = new CommonParams(SupportedClients::Boom()->getUserAgent());
         $protobufHelper = new SmallProtobufHelper();
@@ -31,7 +54,11 @@ class Vk
         $authData = $checkin->doCheckin();
 
         $mtalkClient = new MTalkClient($authData, $protobufHelper);
-        $mtalkClient->sendRequest();
+        try {
+            $mtalkClient->sendRequest();
+        } catch (MTalkException $e) {
+            //
+        }
 
         unset($authData['idStr']);
 
@@ -39,38 +66,20 @@ class Vk
 
         try {
             $result = $ifAuth->getTokenAndId();
-            $token = $result['token'];
-            $userId = $result['userId'];
+            $receiver = new TokenReceiverBoom($authData, $params);
+
+            list($token) = $receiver->getToken($result['token'], $result['userId']);
+
+            return $token;
         } catch (IFAuthException $ex) {
-            if ($ex->code == IFAuthException::TWOFA_REQ) {
-                echo $ex->extra['message']."\n";
-                echo $ex->extra['base64State']."\n"; // pass this and code from sms next time
-                exit(1);
-            } else {
-                throw $ex;
-            }
+            return '';
         }
-        $receiver = new TokenReceiverBoom($authData, $params);
-
-        list($token) = $receiver->getToken($token, $userId);
-
-        if (!empty($token)) {
-            $this->token = $token;
-
-            return true;
-        }
-
-        return false;
     }
 
     public function search(string $query)
     {
-        $client = new Client([
-            'base_uri' => 'https://api.vk.com',
-        ]);
-
         try {
-            $response = $client->get('/method/audio.search', [
+            $response = $this->guzzleClient->get(config('vk.routes.search'), [
                 'headers' => [
                     'User-Agent' => SupportedClients::Boom()->getUserAgent(),
                 ],
@@ -100,5 +109,20 @@ class Vk
             'date' => $item['date'],
             'url' => $item['url'],
         ];
+    }
+
+    protected function setGuzzleClient()
+    {
+        return new GuzzleClient([
+            'base_uri' => config('vk.base_uri'),
+        ]);
+    }
+
+    protected function setMemcacheClient()
+    {
+        return new MemcacheClient(
+            config('cache.stores.memcached.servers.0.host'),
+            config('cache.stores.memcached.servers.0.port')
+        );
     }
 }
