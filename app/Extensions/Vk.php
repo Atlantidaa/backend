@@ -37,7 +37,7 @@ class Vk
 
         if (empty($memcachedToken)) {
             $token = $this->authorize(config('vk.login'), config('vk.password'));
-            $this->memcacheClient->set(static::MEMCACHE_TOKEN_KEY, $token);
+            $this->memcacheClient->set(static::MEMCACHE_TOKEN_KEY, $token, 86400);
 
             return $token;
         }
