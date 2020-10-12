@@ -14,6 +14,11 @@ class Youtube
         $this->audioItags = config('youtube.itags.audio');
     }
 
+    /**
+     * Поиск видео по запросу
+     * @param string $query
+     * @return array
+     */
     public function searchVideos(string $query): array
     {
         $youtubeSearchResult = YoutubeApi::searchVideos($query);
@@ -24,6 +29,11 @@ class Youtube
         );
     }
 
+    /**
+     * Получение ссылок на скачивание аудио-файлов
+     * @param string $id
+     * @return array|string[]
+     */
     public function getAudioLink(string $id): array
     {
         $links = $this->getLinks($id);
@@ -39,6 +49,11 @@ class Youtube
         return ['url' => ''];
     }
 
+    /**
+     * Получение всех ссылок на скачивание (все форматы)
+     * @param string $id
+     * @return array
+     */
     protected function getLinks(string $id): array
     {
         $youtube = new YouTubeDownloader();
@@ -46,6 +61,11 @@ class Youtube
         return $youtube->getDownloadLinks($id);
     }
 
+    /**
+     * Мутатор для response от youtube api
+     * @param object $item
+     * @return array
+     */
     protected function formatSearchResult(object $item): array
     {
         return [
