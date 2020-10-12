@@ -5,12 +5,11 @@ namespace App\Extensions;
 use Vodka2\VKAudioToken\AndroidCheckin;
 use Vodka2\VKAudioToken\IFAuth;
 use Vodka2\VKAudioToken\IFAuthException;
-use Vodka2\VKAudioToken\MTalkException;
 use Vodka2\VKAudioToken\SmallProtobufHelper;
 use Vodka2\VKAudioToken\CommonParams;
-use Vodka2\VKAudioToken\MTalkClient;
 use Vodka2\VKAudioToken\SupportedClients;
 use Vodka2\VKAudioToken\TokenReceiverBoom;
+
 use Clickalicious\Memcached\Client as MemcacheClient;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
@@ -18,6 +17,7 @@ use GuzzleHttp\Exception\GuzzleException;
 class Vk
 {
     const MEMCACHE_TOKEN_KEY = 'vk_token';
+    const MEMCACHE_TOKEN_LIFETIME = 86400;
 
     protected string $token = '';
     protected GuzzleClient $guzzleClient;
@@ -28,16 +28,29 @@ class Vk
         $this->guzzleClient = $this->setGuzzleClient();
         $this->memcacheClient = $this->setMemcacheClient();
 
-        $this->token = $this->getToken();
+        try {
+            $this->token = $this->getToken();
+        } catch (IFAuthException $e) {
+            $this->token = '';
+        }
     }
 
+    /**
+     * Метод получения токена из memcache или при авторизации
+     * @return array|bool|float|mixed|string
+     * @throws IFAuthException
+     */
     protected function getToken()
     {
         $memcachedToken = $this->memcacheClient->get(static::MEMCACHE_TOKEN_KEY);
 
         if (empty($memcachedToken)) {
             $token = $this->authorize(config('vk.login'), config('vk.password'));
-            $this->memcacheClient->set(static::MEMCACHE_TOKEN_KEY, $token, 86400);
+            $this->memcacheClient->set(
+                static::MEMCACHE_TOKEN_KEY,
+                $token,
+                static::MEMCACHE_TOKEN_LIFETIME
+            );
 
             return $token;
         }
@@ -45,6 +58,13 @@ class Vk
         return $memcachedToken;
     }
 
+    /**
+     * Метод авторизации во вконтакте (без 2FA)
+     * @param string $login
+     * @param string $password
+     * @return string
+     * @throws IFAuthException
+     */
     protected function authorize(string $login, string $password): string
     {
         $params = new CommonParams(SupportedClients::Boom()->getUserAgent());
@@ -53,29 +73,21 @@ class Vk
         $checkin = new AndroidCheckin($params, $protobufHelper);
         $authData = $checkin->doCheckin();
 
-        $mtalkClient = new MTalkClient($authData, $protobufHelper);
-        try {
-            $mtalkClient->sendRequest();
-        } catch (MTalkException $e) {
-            //
-        }
-
-        unset($authData['idStr']);
-
         $ifAuth = new IFAuth($login, $password, $params, SupportedClients::Boom(), "audio,messages,offline");
 
-        try {
-            $result = $ifAuth->getTokenAndId();
-            $receiver = new TokenReceiverBoom($authData, $params);
+        $result = $ifAuth->getTokenAndId();
+        $receiver = new TokenReceiverBoom($authData, $params);
 
-            list($token) = $receiver->getToken($result['token'], $result['userId']);
+        list($token) = $receiver->getToken($result['token'], $result['userId']);
 
-            return $token;
-        } catch (IFAuthException $ex) {
-            return '';
-        }
+        return $token;
     }
 
+    /**
+     * Метод поиска по глобальной библиотеке ВК
+     * @param string $query
+     * @return array|string
+     */
     public function search(string $query)
     {
         try {
@@ -97,10 +109,15 @@ class Vk
                 $content['response']['items']
             );
         } catch (GuzzleException $e) {
-            return $e->getMessage();
+            return [];
         }
     }
 
+    /**
+     * Преобразовывает response от сервера ВК
+     * @param array $item
+     * @return array
+     */
     protected function formatSearchResponse(array $item)
     {
         return [
@@ -111,6 +128,10 @@ class Vk
         ];
     }
 
+    /**
+     * Устанавлиеваем guzzle-клиент для дальнейших запросов
+     * @return GuzzleClient
+     */
     protected function setGuzzleClient()
     {
         return new GuzzleClient([
@@ -118,6 +139,10 @@ class Vk
         ]);
     }
 
+    /**
+     * Устанавливаем memcache-клиент для запросов (временно)
+     * @return MemcacheClient
+     */
     protected function setMemcacheClient()
     {
         return new MemcacheClient(
