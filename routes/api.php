@@ -32,5 +32,6 @@ Route::group(
     ],
     function() {
         Route::get('search', [VkController::class, 'search'])->name('vkSearch');
+        Route::get('hints', [VkController::class, 'hints'])->name('vkHints');
     }
 );

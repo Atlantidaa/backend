@@ -21,4 +21,11 @@ class VkController extends Controller
 
         return Response::success($result);
     }
+
+    public function hints(MusicSearchRequest $request)
+    {
+        $result = $this->vkService->hints($request->get('query'));
+
+        return Response::success($result);
+    }
 }

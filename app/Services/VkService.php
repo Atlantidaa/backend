@@ -18,4 +18,9 @@ class VkService implements VkServiceContract
     {
         return $this->vk->search($query);
     }
+
+    public function hints(string $query): array
+    {
+        return $this->vk->hints($query);
+    }
 }

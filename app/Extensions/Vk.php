@@ -114,6 +114,56 @@ class Vk
     }
 
     /**
+     * Получение подсказок от вк
+     * @param string $query
+     * @return array
+     */
+    public function hints(string $query)
+    {
+        try {
+            $response = $this->guzzleClient->post(config('vk.routes.hints'), [
+                'headers' => [
+                    'User-Agent' => 'Mozilla/5.0 (X11; Linux x86_64; rv:81.0) Gecko/20100101 Firefox/81.0',
+                    'Authorization' => 'Basic Xzo2YTI2N2YxN2I4Y2EyM2E1NTBiNTA2N2I3MWZmZmU2MzcyMzAzOWE0MGQwNjBiYzMxNzE1ZDZjYzc1NzcxM2NjYjA1YjhmZDc2Y2QzOTFkZTk2Y2I0',
+                    'X-Requested-With' => 'XMLHttpRequest',
+                    'Host' => 'vk.com',
+                    'Origin' => 'https://vk.com',
+                ],
+                'multipart' => [
+                    [
+                        'name' => 'act',
+                        'contents' => 'a_gsearch_hints',
+                    ],
+                    [
+                        'name' => 'al',
+                        'contents' => '1',
+                    ],
+                    [
+                        'name' => 'al_ad',
+                        'contents' => '0',
+                    ],
+                    [
+                        'name' => 'q',
+                        'contents' => $query,
+                    ],
+                    [
+                        'name' => 'section',
+                        'contents' => 'audio',
+                    ],
+                ],
+            ]);
+
+            $content = json_decode($response->getBody()->getContents(), true);
+            return array_map(
+                [$this, 'formatHintsResponse'],
+                $content['payload'][1][0]
+            );
+        } catch (GuzzleException $e) {
+            return [];
+        }
+    }
+
+    /**
      * Преобразовывает response от сервера ВК
      * @param array $item
      * @return array
@@ -127,6 +177,16 @@ class Vk
             'url' => $item['url'],
             'duration' => $item['duration']
         ];
+    }
+
+    /**
+     * Преобразование подсказок от вк
+     * @param array $item
+     * @return mixed
+     */
+    protected function formatHintsResponse(array $item)
+    {
+        return $item[3];
     }
 
     /**
