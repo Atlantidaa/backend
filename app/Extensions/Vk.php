@@ -10,23 +10,22 @@ use Vodka2\VKAudioToken\CommonParams;
 use Vodka2\VKAudioToken\SupportedClients;
 use Vodka2\VKAudioToken\TokenReceiverBoom;
 
-use Clickalicious\Memcached\Client as MemcacheClient;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
 
+use Illuminate\Support\Facades\Cache;
+
 class Vk
 {
-    const MEMCACHE_TOKEN_KEY = 'vk_token';
-    const MEMCACHE_TOKEN_LIFETIME = 86400;
+    const CACHE_TOKEN_KEY = 'vk_token';
+    const CACHE_TOKEN_LIFETIME = 86400;
 
     protected string $token = '';
     protected GuzzleClient $guzzleClient;
-    protected MemcacheClient $memcacheClient;
 
     public function __construct()
     {
         $this->guzzleClient = $this->setGuzzleClient();
-        $this->memcacheClient = $this->setMemcacheClient();
 
         try {
             $this->token = $this->getToken();
@@ -42,14 +41,14 @@ class Vk
      */
     protected function getToken()
     {
-        $memcachedToken = $this->memcacheClient->get(static::MEMCACHE_TOKEN_KEY);
+        $memcachedToken = Cache::get(static::CACHE_TOKEN_KEY);
 
         if (empty($memcachedToken)) {
             $token = $this->authorize(config('vk.login'), config('vk.password'));
-            $this->memcacheClient->set(
-                static::MEMCACHE_TOKEN_KEY,
+            Cache::put(
+                static::CACHE_TOKEN_KEY,
                 $token,
-                static::MEMCACHE_TOKEN_LIFETIME
+                static::CACHE_TOKEN_LIFETIME
             );
 
             return $token;
@@ -104,6 +103,7 @@ class Vk
             ]);
 
             $content = json_decode($response->getBody()->getContents(), true);
+
             return array_map(
                 [$this, 'formatSearchResponse'],
                 $content['response']['items']
@@ -125,6 +125,7 @@ class Vk
             'title' => $item['title'],
             'date' => $item['date'],
             'url' => $item['url'],
+            'duration' => $item['duration']
         ];
     }
 
@@ -137,17 +138,5 @@ class Vk
         return new GuzzleClient([
             'base_uri' => config('vk.base_uri'),
         ]);
-    }
-
-    /**
-     * Устанавливаем memcache-клиент для запросов (временно)
-     * @return MemcacheClient
-     */
-    protected function setMemcacheClient()
-    {
-        return new MemcacheClient(
-            config('cache.stores.memcached.servers.0.host'),
-            config('cache.stores.memcached.servers.0.port')
-        );
     }
 }
