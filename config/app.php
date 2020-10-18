@@ -180,6 +180,7 @@ return [
          */
         App\Providers\YoutubeServiceProvider::class,
         App\Providers\VkServiceProvider::class,
+        App\Providers\LastfmServiceProvider::class,
 
         /*
          * Dependencies Providers

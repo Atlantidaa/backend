@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\YoutubeController;
 use App\Http\Controllers\VkController;
+use App\Http\Controllers\LastfmController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,15 @@ Route::group(
     ],
     function() {
         Route::get('search', [VkController::class, 'search'])->name('vkSearch');
-        Route::get('hints', [VkController::class, 'hints'])->name('vkHints');
     }
 );
+
+Route::group(
+    [
+        'prefix' => 'lastfm',
+    ],
+    function() {
+        Route::get('hints', [LastfmController::class, 'hints'])->name('lastfmHints');
+    }
+);
+
