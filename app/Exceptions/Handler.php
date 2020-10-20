@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Throwable;
+use App\Extensions\Response;
 
 class Handler extends ExceptionHandler
 {
@@ -33,5 +35,23 @@ class Handler extends ExceptionHandler
     public function register()
     {
         //
+    }
+
+    /**
+     * Перезапись response
+     * @param \Illuminate\Http\Request $request
+     * @param Throwable $e
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
+     * @throws Throwable
+     */
+    public function render($request, Throwable $e)
+    {
+        if ($request->is('api*')) {
+            return Response::error(
+                config('app.debug') ? $e->getMessage() : 'Exception error'
+            );
+        }
+
+        return parent::render($request, $e);
     }
 }

@@ -5,43 +5,23 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\YoutubeController;
 use App\Http\Controllers\VkController;
 use App\Http\Controllers\LastfmController;
+use App\Http\Controllers\AuthController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::prefix('user')->group(function() {
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('login', [AuthController::class, 'login']);
+});
 
-Route::group(
-    [
-        'prefix' => 'youtube',
-    ],
-    function() {
-        Route::get('search', [YoutubeController::class, 'search'])->name('youtubeSearch');
-        Route::get('download/{id}', [YoutubeController::class, 'download'])->name('youtubeDownload');
-    }
-);
+Route::prefix('youtube')->group(function() {
+    Route::get('search', [YoutubeController::class, 'search']);
+    Route::get('download/{id}', [YoutubeController::class, 'download']);
+});
 
-Route::group(
-    [
-        'prefix' => 'vk',
-    ],
-    function() {
-        Route::get('search', [VkController::class, 'search'])->name('vkSearch');
-    }
-);
+Route::prefix('vk')->group(function() {
+    Route::get('search', [VkController::class, 'search']);
+});
 
-Route::group(
-    [
-        'prefix' => 'lastfm',
-    ],
-    function() {
-        Route::get('hints', [LastfmController::class, 'hints'])->name('lastfmHints');
-    }
-);
+Route::prefix('lastfm')->group(function() {
+    Route::get('hints', [LastfmController::class, 'hints']);
+});
 
